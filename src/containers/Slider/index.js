@@ -11,14 +11,13 @@ const Slider = () => {
     new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
   );
   const nextCard = () => {
-    setTimeout(
-      () => setIndex(index < byDateDesc.length ? index + 1 : 0),
-      5000
-    );
+    setTimeout(() => {
+      setIndex((prevIndex) => (byDateDesc?.length ? (prevIndex + 1) % byDateDesc.length : 0));
+    }, 5000); /* won't try to acces length property if byDateDesc is "undefined" */
   };
   useEffect(() => {
     nextCard();
-  });
+  },  [index, byDateDesc] ); // Adding dependencies to the useEffect dependency array
   return (
     <div className="SlideCardList">
       {byDateDesc?.map((event, idx) => (

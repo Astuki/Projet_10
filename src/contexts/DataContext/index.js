@@ -19,17 +19,26 @@ export const api = {
 export const DataProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
+
   const getData = useCallback(async () => {
     try {
-      setData(await api.loadData());
+
+      const jsonData = await api.loadData();
+      setData(jsonData);
+      
     } catch (err) {
       setError(err);
     }
   }, []);
+
+
   useEffect(() => {
-    if (data) return;
-    getData();
-  });
+    // Fetch data only if it hasn't been fetched yet
+    if (!data) {
+      getData();
+    }
+  }, [data, getData]);
+
   
   return (
     <DataContext.Provider
