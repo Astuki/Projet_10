@@ -10,20 +10,29 @@ const Slider = () => {
   const byDateDesc = data?.focus.sort((evtA, evtB) =>
     new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
   );
+  /*
   const nextCard = () => {
     setTimeout(() => {
       setIndex((prevIndex) => (byDateDesc?.length ? (prevIndex + 1) % byDateDesc.length : 0));
-    }, 5000); /* won't try to acces length property if byDateDesc is "undefined" */
+    }, 5000); /* won't try to access length property if byDateDesc is "undefined" so no "4th blank slider img" 
   };
+  */
+
   useEffect(() => {
-    nextCard();
-  },  [index, byDateDesc] ); // Adding dependencies to the useEffect dependency array
+    const intervalId = setInterval(() => {
+      setIndex((prevIndex) => (byDateDesc?.length ? (prevIndex + 1) % byDateDesc.length : 0));
+    }, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [byDateDesc]);
+
+
   return (
     <div className="SlideCardList">
       {byDateDesc?.map((event, idx) => (
         <>
           <div
-            key={event.title}
+            key={event.id}
             className={`SlideCard SlideCard--${
               index === idx ? "display" : "hide"
             }`}
@@ -39,13 +48,14 @@ const Slider = () => {
           </div>
           <div className="SlideCard__paginationContainer">
             <div className="SlideCard__pagination">
-              {byDateDesc.map((_, radioIdx) => (
-                <input
-                  key={`${event.id}`}
-                  type="radio"
-                  name="radio-button"
-                  checked={idx === radioIdx}
-                />
+              {byDateDesc?.map((_, radioIdx) => (
+              <input
+                key={event.id}
+                type="radio"
+                name="radio-button"
+                checked={index === radioIdx}
+                onChange={() => setIndex(radioIdx)}
+              />
               ))}
             </div>
           </div>
