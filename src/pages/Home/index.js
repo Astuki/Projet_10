@@ -17,13 +17,13 @@ import { useData } from "../../contexts/DataContext";
 const Page = () => {
 
   const {data} = useData();
-  
+
   /* last data wasn't accessible for the EventCard in the footer of the page, changed the way it sorted it */
   const last = data?.events?.length > 0
   ? [...data.events].sort((a, b) => new Date(b.date) - new Date(a.date))[0]
   : null;
-  /* */
 
+  /* */
   return <>
     <header>
       <Menu />
@@ -126,15 +126,15 @@ const Page = () => {
     <footer className="row">
       <div className="col presta">
         <h3>Notre derniére prestation</h3>
-        {last && (
+        {last && ( // data was sometimes undefined, wait until the data exist
           <EventCard
             imageSrc={last?.cover}
             title={last?.title}
             date={new Date(last?.date)}
             small
-            label={last?.type}
+            label={last?.type} /* selecting the event type */
           />
-        )}
+        )};
       </div>
       <div className="col contact">
         <h3>Contactez-nous</h3>
