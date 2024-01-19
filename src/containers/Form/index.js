@@ -16,6 +16,7 @@ const Form = ({ onSuccess, onError }) => {
       try {
         await mockContactApi();
         setSending(false);
+        onSuccess() /* In case of successfull send */
       } catch (err) {
         setSending(false);
         onError(err);
@@ -59,8 +60,8 @@ Form.propTypes = {
 }
 
 Form.defaultProps = {
-  onError: () => "Erreur, message non Envoyé.",
-  onSuccess: () => "Message envoyé !",
+  onError: () => "null",
+  onSuccess: () => "null",
 }
 
 export default Form;
